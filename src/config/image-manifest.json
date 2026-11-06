@@ -1,0 +1,211 @@
+{
+  "cta-bg": {
+    "widths": [
+      1200
+    ],
+    "width": 1200,
+    "height": 638
+  },
+  "finish-exclusive": {
+    "widths": [
+      420,
+      648
+    ],
+    "width": 648,
+    "height": 432
+  },
+  "finish-glossy": {
+    "widths": [
+      420,
+      648
+    ],
+    "width": 648,
+    "height": 432
+  },
+  "finish-marble": {
+    "widths": [
+      420,
+      648
+    ],
+    "width": 648,
+    "height": 432
+  },
+  "finish-matte": {
+    "widths": [
+      420,
+      648
+    ],
+    "width": 648,
+    "height": 365
+  },
+  "finish-metallic": {
+    "widths": [
+      420,
+      648
+    ],
+    "width": 648,
+    "height": 432
+  },
+  "finish-mirror": {
+    "widths": [
+      420,
+      648
+    ],
+    "width": 648,
+    "height": 432
+  },
+  "finish-sparkling": {
+    "widths": [
+      420,
+      648
+    ],
+    "width": 648,
+    "height": 432
+  },
+  "finish-wood": {
+    "widths": [
+      420,
+      648
+    ],
+    "width": 648,
+    "height": 432
+  },
+  "hero-facade": {
+    "widths": [
+      828,
+      1280,
+      1672
+    ],
+    "width": 1672,
+    "height": 941
+  },
+  "news-acp": {
+    "widths": [
+      800,
+      1200
+    ],
+    "width": 1200,
+    "height": 800
+  },
+  "news-finish": {
+    "widths": [
+      220
+    ],
+    "width": 220,
+    "height": 124
+  },
+  "news-fire": {
+    "widths": [
+      220
+    ],
+    "width": 220,
+    "height": 147
+  },
+  "news-manufacturing": {
+    "widths": [
+      220
+    ],
+    "width": 220,
+    "height": 147
+  },
+  "product-a2": {
+    "widths": [
+      560,
+      840
+    ],
+    "width": 1122,
+    "height": 1402
+  },
+  "product-b1": {
+    "widths": [
+      560,
+      840
+    ],
+    "width": 1122,
+    "height": 1402
+  },
+  "product-pe": {
+    "widths": [
+      560,
+      840
+    ],
+    "width": 1122,
+    "height": 1402
+  },
+  "project-commercial": {
+    "widths": [
+      880,
+      1200
+    ],
+    "width": 1200,
+    "height": 800
+  },
+  "project-institutional": {
+    "widths": [
+      520,
+      996
+    ],
+    "width": 996,
+    "height": 498
+  },
+  "project-office": {
+    "widths": [
+      520,
+      996
+    ],
+    "width": 996,
+    "height": 664
+  },
+  "project-shopping": {
+    "widths": [
+      520,
+      996
+    ],
+    "width": 996,
+    "height": 664
+  },
+  "tech-certificates": {
+    "widths": [
+      256
+    ],
+    "width": 502,
+    "height": 438
+  },
+  "tech-datasheets": {
+    "widths": [
+      256
+    ],
+    "width": 502,
+    "height": 502
+  },
+  "tech-downloads": {
+    "widths": [
+      256
+    ],
+    "width": 502,
+    "height": 502
+  },
+  "tech-fire": {
+    "widths": [
+      256
+    ],
+    "width": 502,
+    "height": 502
+  },
+  "tech-installation": {
+    "widths": [
+      256
+    ],
+    "width": 502,
+    "height": 335
+  },
+  "why-facility": {
+    "widths": [
+      800,
+      1280,
+      1672
+    ],
+    "width": 1672,
+    "height": 941
+  }
+}
