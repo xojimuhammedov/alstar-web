@@ -12,9 +12,12 @@ export function Products() {
         <SectionHead index="02" title={t.products.title} titleId="products-title">
           <div className="right">
             <p className="small-copy">
-              {t.products.aside[0]}
-              <br />
-              {t.products.aside[1]}
+              {t.products.aside.map((line, i) => (
+                <span key={i}>
+                  {i > 0 && <br />}
+                  {line}
+                </span>
+              ))}
             </p>
             <Button href="#contact">{t.products.cta}</Button>
           </div>

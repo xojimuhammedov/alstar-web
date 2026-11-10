@@ -7,7 +7,7 @@ export function Colours() {
   return (
     <section className="section" id="colours" aria-labelledby="colours-title">
       <div className="container">
-        <SectionHead index="03" title={t.colours.title} titleId="colours-title">
+        <SectionHead index="03" title={t.colours.title} titleId="colours-title" intro={t.colours.copy}>
           <Button href="#contact">{t.colours.cta}</Button>
         </SectionHead>
         <ul className="colour-grid" role="list">

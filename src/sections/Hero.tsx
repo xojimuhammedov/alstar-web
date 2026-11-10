@@ -1,15 +1,27 @@
-import { useRef, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import { Button, delay, Img } from '../components/ui';
-import { site } from '../config/site';
+import { heroTitleParam, heroTitleVariants } from '../config/heroTitleVariants';
+import { visibleStats } from '../config/stats';
 import { formatNumber } from '../hooks/useCountUp';
 import { prefersReducedMotion, useScrollFrame } from '../hooks/useScrollFrame';
 import { useI18n } from '../i18n';
 
 export function Hero() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
-  const { stats } = site;
+
+  // Client preview of the candidate headlines (uz only): /?sarlavha=1…5.
+  // Read after hydration so the pre-rendered HTML always carries the default title.
+  const [variant, setVariant] = useState<number | null>(null);
+  useEffect(() => {
+    if (locale !== 'uz') return;
+    const n = Number(new URLSearchParams(window.location.search).get(heroTitleParam));
+    if (Number.isInteger(n) && n >= 1 && n <= heroTitleVariants.length) setVariant(n - 1);
+  }, [locale]);
+  const { title, accentLine } = variant === null ? t.hero : heroTitleVariants[variant];
+  // The mobile title size is fitted to the longest word so no line is clipped.
+  const longestWord = Math.max(...title.flatMap((line) => line.split(/\s+/)).map((w) => w.length));
 
   useScrollFrame((reduced) => {
     if (reduced || !bgRef.current) return;
@@ -25,12 +37,7 @@ export function Hero() {
     el.style.setProperty('--my', `${(((e.clientY - r.top) / r.height) * 100).toFixed(1)}%`);
   };
 
-  const specs = [
-    { value: `${stats.years}+`, label: t.stats.years },
-    { value: formatNumber(stats.facilityM2), label: t.stats.facility },
-    { value: formatNumber(stats.projects), label: t.stats.projects },
-    { value: `${stats.team}+`, label: t.stats.team },
-  ];
+  const specs = visibleStats(t);
 
   return (
     <section className="hero" ref={sectionRef} onPointerMove={onPointerMove} aria-labelledby="hero-title">
@@ -58,9 +65,12 @@ export function Hero() {
             <span className="hero-pulse" aria-hidden="true" />
             {t.hero.kicker}
           </span>
-          <span className="hero-title reveal" style={delay(120)}>
-            {t.hero.title.map((line, i) => (
-              <span key={i} className={i === t.hero.accentLine ? 'accent' : undefined}>
+          <span
+            className="hero-title reveal"
+            style={{ ...delay(120), '--longest-word': longestWord } as CSSProperties}
+          >
+            {title.map((line, i) => (
+              <span key={i} className={i === accentLine ? 'accent' : undefined}>
                 {line}{' '}
               </span>
             ))}
@@ -88,11 +98,14 @@ export function Hero() {
       <div className="hero-rail" aria-hidden="true">
         {t.hero.rail}
       </div>
-      <dl className="hero-specs">
+      <dl className="hero-specs" style={{ '--spec-count': specs.length } as CSSProperties}>
         {specs.map((s) => (
-          <div className="hero-spec" key={s.label}>
+          <div className="hero-spec" key={s.key}>
             <dt>{s.label}</dt>
-            <dd>{s.value}</dd>
+            <dd>
+              {formatNumber(s.value)}
+              {s.suffix}
+            </dd>
           </div>
         ))}
       </dl>

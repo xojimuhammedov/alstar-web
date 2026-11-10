@@ -38,11 +38,18 @@ export const site = {
   /** TODO: official social profiles (Instagram, Telegram, Facebook, LinkedIn, YouTube) */
   sameAs: [] as string[],
   areaServed: ['UZ', 'KZ', 'KG', 'TJ', 'TM'],
+  /**
+   * `null` = not confirmed yet: the figure is hidden everywhere (hero, "Why
+   * ALSTAR", JSON-LD, llms.txt) until the client confirms it.
+   * - facilityM2: the source gives "50 000 000+ m²", but it is unclear whether it
+   *   means facility area, total panels produced or yearly capacity.
+   * - projects: no confirmed count yet.
+   */
   stats: {
-    years: 40,
-    facilityM2: 20000,
-    projects: 1837,
-    team: 130,
+    years: 13,
+    facilityM2: null as number | null,
+    projects: null as number | null,
+    team: 100,
   },
 } as const;
 

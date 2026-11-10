@@ -84,6 +84,7 @@ export const en = {
   },
   colours: {
     title: 'Colours & Finishes',
+    copy: 'Choose the colour and texture that suit your project’s style.',
     cta: 'View all colours',
     items: [
       { id: 'matte', name: 'Matte' },
@@ -156,7 +157,7 @@ export const en = {
       },
       {
         q: 'Where are ALSTAR panels produced?',
-        a: 'ALSTAR has been manufacturing aluminium composite panels since 2013 at its own 20,000 m² production facility in Uzbekistan, with a team of more than 130 people.',
+        a: 'ALSTAR has been manufacturing aluminium composite panels since 2013 at its own production facility in Uzbekistan, with a team of more than 100 people.',
       },
       {
         q: 'How do I request a quote or a sample?',

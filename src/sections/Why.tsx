@@ -1,18 +1,12 @@
 import { Button, delay, Img } from '../components/ui';
-import { site } from '../config/site';
+import { visibleStats } from '../config/stats';
 import { formatNumber, useCountUp } from '../hooks/useCountUp';
 import { useI18n } from '../i18n';
 
 export function Why() {
   const { t } = useI18n();
-  const { stats } = site;
-  const items = [
-    { target: stats.years, suffix: '+', label: t.stats.years },
-    { target: stats.facilityM2, suffix: '', label: t.stats.facility },
-    { target: stats.projects, suffix: '', label: t.stats.projects },
-    { target: stats.team, suffix: '+', label: t.stats.team },
-  ];
-  const { ref, values } = useCountUp<HTMLDListElement>(items.map((i) => i.target));
+  const items = visibleStats(t);
+  const { ref, values } = useCountUp<HTMLDListElement>(items.map((i) => i.value));
 
   return (
     <section className="section" id="why" aria-labelledby="why-title">
@@ -35,7 +29,7 @@ export function Why() {
         </div>
         <dl className="stats reveal" ref={ref}>
           {items.map((item, i) => (
-            <div className="stat" key={item.label}>
+            <div className="stat" key={item.key}>
               <dt>{item.label}</dt>
               <dd className="num">
                 {formatNumber(values[i])}

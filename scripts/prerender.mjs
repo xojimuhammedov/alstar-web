@@ -72,7 +72,7 @@ const llms = `# ${site.name}
 
 > ${en.meta.description}
 
-${site.name} has manufactured aluminium composite panels (ACP, also known as "alucobond") in Uzbekistan since ${site.foundingYear}. Production facility: ${site.stats.facilityM2.toLocaleString('en-US')} m². Projects completed: ${site.stats.projects.toLocaleString('en-US')}. Team: ${site.stats.team}+ people.
+${site.name} has manufactured aluminium composite panels (ACP, also known as "alucobond") in Uzbekistan since ${site.foundingYear}.${site.stats.facilityM2 ? ` Production facility: ${site.stats.facilityM2.toLocaleString('en-US')} m².` : ''}${site.stats.projects ? ` Projects completed: ${site.stats.projects.toLocaleString('en-US')}.` : ''} Team: ${site.stats.team}+ people.
 
 ## Products
 
