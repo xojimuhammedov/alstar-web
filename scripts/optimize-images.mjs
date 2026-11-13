@@ -18,7 +18,7 @@ const widthsFor = (name) => {
   if (name === 'why-facility') return [800, 1280, 1672];
   if (name.startsWith('product-')) return [560, 840];
   if (name === 'cta-bg') return [1200];
-  if (name.startsWith('finish-')) return [420, 648];
+  if (name.startsWith('finish-')) return [648, 911];
   if (name === 'project-commercial') return [880, 1200];
   if (name.startsWith('project-')) return [520, 996];
   if (name === 'news-acp') return [800, 1200];

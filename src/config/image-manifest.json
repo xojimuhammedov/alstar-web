@@ -8,67 +8,67 @@
   },
   "finish-exclusive": {
     "widths": [
-      420,
-      648
+      648,
+      911
     ],
-    "width": 648,
-    "height": 432
+    "width": 911,
+    "height": 502
   },
   "finish-glossy": {
     "widths": [
-      420,
-      648
+      648,
+      911
     ],
-    "width": 648,
-    "height": 432
+    "width": 911,
+    "height": 502
   },
   "finish-marble": {
     "widths": [
-      420,
-      648
+      648,
+      911
     ],
-    "width": 648,
-    "height": 432
+    "width": 911,
+    "height": 502
   },
   "finish-matte": {
     "widths": [
-      420,
-      648
+      648,
+      911
     ],
-    "width": 648,
-    "height": 365
+    "width": 911,
+    "height": 502
   },
   "finish-metallic": {
     "widths": [
-      420,
-      648
+      648,
+      911
     ],
-    "width": 648,
-    "height": 432
+    "width": 911,
+    "height": 502
   },
   "finish-mirror": {
     "widths": [
-      420,
-      648
+      648,
+      911
     ],
-    "width": 648,
-    "height": 432
+    "width": 911,
+    "height": 502
   },
   "finish-sparkling": {
     "widths": [
-      420,
-      648
+      648,
+      911
     ],
-    "width": 648,
-    "height": 432
+    "width": 911,
+    "height": 502
   },
   "finish-wood": {
     "widths": [
-      420,
-      648
+      648,
+      911
     ],
-    "width": 648,
-    "height": 432
+    "width": 911,
+    "height": 502
   },
   "hero-facade": {
     "widths": [
