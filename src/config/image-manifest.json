@@ -76,8 +76,8 @@
       1280,
       1672
     ],
-    "width": 1672,
-    "height": 941
+    "width": 1784,
+    "height": 882
   },
   "news-acp": {
     "widths": [
@@ -113,24 +113,24 @@
       560,
       840
     ],
-    "width": 1122,
-    "height": 1402
+    "width": 1080,
+    "height": 1080
   },
   "product-b1": {
     "widths": [
       560,
       840
     ],
-    "width": 1122,
-    "height": 1402
+    "width": 1080,
+    "height": 1080
   },
   "product-pe": {
     "widths": [
       560,
       840
     ],
-    "width": 1122,
-    "height": 1402
+    "width": 1080,
+    "height": 1080
   },
   "project-commercial": {
     "widths": [
