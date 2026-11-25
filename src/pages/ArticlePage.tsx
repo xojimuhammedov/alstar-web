@@ -3,7 +3,7 @@ import { PageHero } from '../components/PageHero';
 import { Arrow, Button, Img } from '../components/ui';
 import { articleBySlug, articles } from '../content/articles';
 import { useI18n } from '../i18n';
-import { homeAnchor, routePath } from '../routes';
+import { anchorHref, pageHref } from '../routes';
 import { Cta } from '../sections/Cta';
 import { formatDate } from './ArticlesPage';
 
@@ -11,7 +11,7 @@ export function ArticlePage({ slug }: { slug: string }) {
   const { t, locale } = useI18n();
   const a = t.articles;
   const article = articleBySlug(slug) ?? articles[0];
-  const index = routePath(locale, { page: 'articles' });
+  const index = pageHref(locale, { page: 'articles' });
   const related = articles.filter((x) => x.slug !== article.slug).slice(0, 3);
   const toc = headingsOf(article.body);
 
@@ -37,7 +37,7 @@ export function ArticlePage({ slug }: { slug: string }) {
               <Button href={index} arrow={false}>
                 ← {a.back}
               </Button>
-              <Button variant="red" href={homeAnchor(locale, 'contact')}>
+              <Button variant="red" href={anchorHref(locale, 'contact')}>
                 {a.cta}
               </Button>
             </div>
@@ -72,7 +72,7 @@ export function ArticlePage({ slug }: { slug: string }) {
                 <div className="post-body">
                   <div className="cat">{x.category}</div>
                   <h3>
-                    <a href={routePath(locale, { page: 'article', slug: x.slug })} className="stretched">
+                    <a href={pageHref(locale, { page: 'article', slug: x.slug })} className="stretched">
                       {x.title}
                     </a>
                   </h3>

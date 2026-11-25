@@ -4,7 +4,7 @@ import { site } from '../config/site';
 import { articleBySlug } from '../content/articles';
 import { imageSet } from '../config/images';
 import { getDictionary, localeInfo, localePath, type Locale } from '../i18n';
-import { routePath, type Route } from '../routes';
+import { routePath, stripBase, type Route } from '../routes';
 import { pageMeta } from './head';
 
 const abs = (path: string) => `${site.url}${path}`;
@@ -103,7 +103,7 @@ export function buildSchema(locale: Locale, route: Route = { page: 'home' }) {
         '@id': `${pageUrl}#article`,
         headline: article.title,
         description: article.metaDescription,
-        image: abs(imageSet(article.image).src),
+        image: abs(stripBase(imageSet(article.image).src)),
         datePublished: article.date,
         dateModified: article.date,
         inLanguage: localeInfo[locale].hreflang,

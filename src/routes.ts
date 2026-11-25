@@ -38,8 +38,19 @@ export function routePath(locale: Locale, route: Route): string {
 /** Link to a section of the home page, e.g. homeAnchor('ru', 'contact') → "/ru/#contact". */
 export const homeAnchor = (locale: Locale, id: string) => `${localePath(locale)}#${id}`;
 
+/** Deploy sub-path ("/" normally, "/alstar-web/" on GitHub Pages). Paths above are base-free. */
+export const BASE = import.meta.env.BASE_URL;
+export const withBase = (path: string) => `${BASE}${path.replace(/^\//, '')}`;
+/** Base-free path of a URL path that includes the deploy sub-path. */
+export const stripBase = (path: string) => (path.startsWith(BASE) ? `/${path.slice(BASE.length)}` : path);
+
+/** Link targets for <a href> — the same paths with the deploy sub-path added. */
+export const localeHref = (locale: Locale) => withBase(localePath(locale));
+export const pageHref = (locale: Locale, route: Route) => withBase(routePath(locale, route));
+export const anchorHref = (locale: Locale, id: string) => withBase(homeAnchor(locale, id));
+
 export function parseRoute(pathname: string): { locale: Locale; route: Route } {
-  const parts = pathname.split('/').filter(Boolean);
+  const parts = stripBase(pathname).split('/').filter(Boolean);
   let locale: Locale = defaultLocale;
   if ((locales as readonly string[]).includes(parts[0])) locale = parts.shift() as Locale;
   const [first, second] = parts;

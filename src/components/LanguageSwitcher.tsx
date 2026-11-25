@@ -1,5 +1,5 @@
-import { localeInfo, localePath, locales, useI18n } from '../i18n';
-import { routeExists, routePath, useRoute } from '../routes';
+import { localeInfo, locales, useI18n } from '../i18n';
+import { localeHref, pageHref, routeExists, useRoute } from '../routes';
 
 /** Plain links to the pre-rendered page of each language (crawlable, no JS needed). */
 export function LanguageSwitcher({ className = '' }: { className?: string }) {
@@ -11,7 +11,7 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
         <a
           key={l}
           // Same page in the other language; Uzbek-only pages fall back to that language's home page.
-          href={routeExists(l, route) ? routePath(l, route) : localePath(l)}
+          href={routeExists(l, route) ? pageHref(l, route) : localeHref(l)}
           hrefLang={localeInfo[l].hreflang}
           lang={localeInfo[l].hreflang}
           aria-current={l === locale ? 'page' : undefined}

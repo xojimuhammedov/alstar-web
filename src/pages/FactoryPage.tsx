@@ -4,7 +4,7 @@ import { Button, delay, Img } from '../components/ui';
 import { lifeGallery, ralColours, series, type RalColour } from '../content/factory';
 import { prefersReducedMotion } from '../hooks/useScrollFrame';
 import { useI18n } from '../i18n';
-import { homeAnchor } from '../routes';
+import { anchorHref } from '../routes';
 import { Cta } from '../sections/Cta';
 
 /** Light colours need dark text on top of them. */
@@ -106,7 +106,7 @@ export function FactoryPage() {
   const f = t.factory;
   const [picked, setPicked] = useState<RalColour | null>(null);
   const [cycle, setCycle] = useState(0);
-  const contact = homeAnchor(locale, 'contact');
+  const contact = anchorHref(locale, 'contact');
 
   // The hero coil cycles through a few colours until the visitor picks one.
   useEffect(() => {

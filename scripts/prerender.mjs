@@ -62,7 +62,7 @@ console.log('✓ sitemap.xml');
 // 3. robots.txt — AI crawlers are allowed explicitly (GEO): being readable by
 // ChatGPT, Claude, Perplexity and Gemini lets them cite ALSTAR in answers.
 const aiBots = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'YandexBot'];
-const robots = `User-agent: *
+const robots = process.env.VITE_NOINDEX === '1' ? `User-agent: *\nDisallow: /\n` : `User-agent: *
 Allow: /
 
 ${aiBots.map((b) => `User-agent: ${b}\nAllow: /`).join('\n\n')}

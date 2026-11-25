@@ -2,7 +2,7 @@ import { PageHero } from '../components/PageHero';
 import { Arrow, delay, Img } from '../components/ui';
 import { articles } from '../content/articles';
 import { useI18n } from '../i18n';
-import { routePath } from '../routes';
+import { pageHref } from '../routes';
 import { Cta } from '../sections/Cta';
 
 export const formatDate = (iso: string) => {
@@ -14,7 +14,7 @@ export function ArticlesPage() {
   const { t, locale } = useI18n();
   const a = t.articles;
   const [first, ...rest] = articles;
-  const href = (slug: string) => routePath(locale, { page: 'article', slug });
+  const href = (slug: string) => pageHref(locale, { page: 'article', slug });
 
   return (
     <>

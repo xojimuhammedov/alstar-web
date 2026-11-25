@@ -1,19 +1,19 @@
 import type { Dictionary, Locale } from '../i18n';
-import { homeAnchor, routePath } from '../routes';
+import { anchorHref, pageHref } from '../routes';
 
 type NavKey = 'about' | 'products' | 'colours' | 'projects' | 'news' | 'factory' | 'technical' | 'faq' | 'contact';
 
 /** Home-page sections are linked as "/<locale>/#id" so the menu also works from sub-pages. */
 const sections: { key: NavKey; href: (l: Locale) => string }[] = [
-  { key: 'about', href: (l) => homeAnchor(l, 'why') },
-  { key: 'products', href: (l) => homeAnchor(l, 'products') },
-  { key: 'colours', href: (l) => homeAnchor(l, 'colours') },
-  { key: 'projects', href: (l) => homeAnchor(l, 'projects') },
-  { key: 'news', href: (l) => homeAnchor(l, 'news') },
-  { key: 'factory', href: (l) => routePath(l, { page: 'factory' }) },
-  { key: 'technical', href: (l) => homeAnchor(l, 'technical') },
-  { key: 'faq', href: (l) => homeAnchor(l, 'faq') },
-  { key: 'contact', href: (l) => homeAnchor(l, 'contact') },
+  { key: 'about', href: (l) => anchorHref(l, 'why') },
+  { key: 'products', href: (l) => anchorHref(l, 'products') },
+  { key: 'colours', href: (l) => anchorHref(l, 'colours') },
+  { key: 'projects', href: (l) => anchorHref(l, 'projects') },
+  { key: 'news', href: (l) => anchorHref(l, 'news') },
+  { key: 'factory', href: (l) => pageHref(l, { page: 'factory' }) },
+  { key: 'technical', href: (l) => anchorHref(l, 'technical') },
+  { key: 'faq', href: (l) => anchorHref(l, 'faq') },
+  { key: 'contact', href: (l) => anchorHref(l, 'contact') },
 ];
 
 /** Header shows everything except FAQ (kept to the footer and mobile menu to save space). */

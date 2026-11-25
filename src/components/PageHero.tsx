@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { localePath, useI18n } from '../i18n';
+import { useI18n } from '../i18n';
+import { localeHref } from '../routes';
 
 interface Crumb {
   label: string;
@@ -17,7 +18,7 @@ interface PageHeroProps {
 /** Title block for sub-pages: breadcrumb, kicker, h1 and intro. */
 export function PageHero({ kicker, title, intro, crumbs, children }: PageHeroProps) {
   const { t, locale } = useI18n();
-  const trail: Crumb[] = [{ label: t.nav.homeShort, href: localePath(locale) }, ...crumbs];
+  const trail: Crumb[] = [{ label: t.nav.homeShort, href: localeHref(locale) }, ...crumbs];
   return (
     <header className="page-hero">
       <div className="container">

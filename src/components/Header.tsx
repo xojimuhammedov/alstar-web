@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { site, telHref } from '../config/site';
 import { useScrollFrame } from '../hooks/useScrollFrame';
 import { useI18n } from '../i18n';
-import { homeAnchor, useRoute } from '../routes';
+import { anchorHref, useRoute } from '../routes';
 import { Brand } from './Brand';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { navItems } from './navItems';
@@ -31,7 +31,7 @@ export function Header() {
         </nav>
         <div className="nav-actions">
           <LanguageSwitcher className="lang-desktop" />
-          <Button className="nav-cta" href={homeAnchor(locale, 'contact')}>
+          <Button className="nav-cta" href={anchorHref(locale, 'contact')}>
             {t.nav.cta}
           </Button>
 

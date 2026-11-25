@@ -1,7 +1,7 @@
 import { Arrow, Button, delay, Img, SectionHead } from '../components/ui';
 import { articles } from '../content/articles';
 import { useI18n } from '../i18n';
-import { routePath } from '../routes';
+import { pageHref } from '../routes';
 
 /** News cards → article slugs (article texts exist in Uzbek). */
 const slugFor: Record<string, string> = {
@@ -13,7 +13,7 @@ const slugFor: Record<string, string> = {
 
 const articleFor = (id: string) => articles.find((a) => a.slug === slugFor[id]) ?? articles[0];
 // Articles are Uzbek-only, so every language links to the Uzbek pages.
-const href = (id: string) => routePath('uz', { page: 'article', slug: articleFor(id).slug });
+const href = (id: string) => pageHref('uz', { page: 'article', slug: articleFor(id).slug });
 
 export function News() {
   const { t, locale } = useI18n();
@@ -25,7 +25,7 @@ export function News() {
         <SectionHead index="05" title={t.news.title} titleId="news-title">
           <div className="right">
             {t.news.langNote && <p className="small-copy">{t.news.langNote}</p>}
-            <Button href={routePath('uz', { page: 'articles' })} hrefLang={lang}>
+            <Button href={pageHref('uz', { page: 'articles' })} hrefLang={lang}>
               {t.news.cta}
             </Button>
           </div>

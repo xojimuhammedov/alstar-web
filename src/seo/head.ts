@@ -4,7 +4,7 @@ import { site } from '../config/site';
 import { articleBySlug } from '../content/articles';
 import { imageSet } from '../config/images';
 import { defaultLocale, getDictionary, localeInfo, locales, type Locale } from '../i18n';
-import { routeExists, routePath, type Route } from '../routes';
+import { routeExists, routePath, stripBase, type Route } from '../routes';
 import { buildSchema } from './schema';
 
 const esc = (s: string) =>
@@ -42,7 +42,7 @@ export function pageMeta(locale: Locale, route: Route): PageMeta {
       return {
         title: a.seoTitle,
         description: a.metaDescription,
-        image: { url: `${site.url}${img.src}`, width: img.width, height: img.height, type: 'image/webp' },
+        image: { url: `${site.url}${stripBase(img.src)}`, width: img.width, height: img.height, type: 'image/webp' },
         imageAlt: a.imageAlt,
         type: 'article',
       };
@@ -63,7 +63,10 @@ export function renderHead(locale: Locale, route: Route): string {
     `<title>${esc(meta.title)}</title>`,
     `<meta name="description" content="${esc(meta.description)}">`,
     ...(route.page === 'home' ? [`<meta name="keywords" content="${esc(t.meta.keywords)}">`] : []),
-    `<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">`,
+    // Preview deploys (GitHub Pages) must not compete with the real domain in search.
+    import.meta.env.VITE_NOINDEX === '1'
+      ? `<meta name="robots" content="noindex, nofollow">`
+      : `<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">`,
     `<meta name="author" content="${site.name}">`,
     `<link rel="canonical" href="${url}">`,
 

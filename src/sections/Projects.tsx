@@ -3,13 +3,13 @@ import { Arrow, Button, Img, SectionHead } from '../components/ui';
 import { galleryImage, projects } from '../content/projects';
 import { useScrollFrame } from '../hooks/useScrollFrame';
 import { useI18n } from '../i18n';
-import { routePath } from '../routes';
+import { pageHref } from '../routes';
 
 export function Projects() {
   const { t, locale } = useI18n();
   const pinRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const page = routePath(locale, { page: 'projects' });
+  const page = pageHref(locale, { page: 'projects' });
 
   // Vertical scroll drives the horizontal track while the section is pinned (desktop only).
   useScrollFrame((reduced) => {
