@@ -1,4 +1,166 @@
 {
+  "article-acp": {
+    "widths": [
+      240,
+      640,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
+  "article-architecture": {
+    "widths": [
+      240,
+      640,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
+  "article-finish": {
+    "widths": [
+      240,
+      640,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
+  "article-fire": {
+    "widths": [
+      240,
+      640,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
+  "article-granule": {
+    "widths": [
+      240,
+      640,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
+  "article-interior": {
+    "widths": [
+      240,
+      640,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
+  "article-mistakes": {
+    "widths": [
+      240,
+      640,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
+  "article-pvdf": {
+    "widths": [
+      240,
+      640,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
+  "cert-01": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1554,
+    "height": 2200
+  },
+  "cert-02": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1554,
+    "height": 2200
+  },
+  "cert-03": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1554,
+    "height": 2200
+  },
+  "cert-04": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1554,
+    "height": 2200
+  },
+  "cert-05": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1554,
+    "height": 2200
+  },
+  "cert-06": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1555,
+    "height": 2200
+  },
+  "cert-07": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1555,
+    "height": 2200
+  },
+  "cert-08": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1554,
+    "height": 2200
+  },
+  "cert-09": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1554,
+    "height": 2200
+  },
+  "cert-10": {
+    "widths": [
+      360,
+      720,
+      1100
+    ],
+    "width": 1554,
+    "height": 2200
+  },
   "cta-bg": {
     "widths": [
       1200
@@ -70,6 +232,156 @@
     "width": 911,
     "height": 502
   },
+  "gallery-glass-office-1": {
+    "widths": [
+      640,
+      1000,
+      1600
+    ],
+    "width": 1600,
+    "height": 1000
+  },
+  "gallery-glass-office-2": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-glass-office-3": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-kumushkon-1": {
+    "widths": [
+      640,
+      1000,
+      1600
+    ],
+    "width": 1600,
+    "height": 1000
+  },
+  "gallery-kumushkon-2": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-kumushkon-3": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-nyuport-g1-1": {
+    "widths": [
+      640,
+      1000,
+      1600
+    ],
+    "width": 1600,
+    "height": 1000
+  },
+  "gallery-nyuport-g1-2": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-nyuport-g1-3": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-ornament-1": {
+    "widths": [
+      640,
+      1000,
+      1600
+    ],
+    "width": 1600,
+    "height": 1000
+  },
+  "gallery-ornament-2": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-ornament-3": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-pavilion-1": {
+    "widths": [
+      640,
+      1000,
+      1600
+    ],
+    "width": 1600,
+    "height": 1000
+  },
+  "gallery-pavilion-2": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-pavilion-3": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-white-tower-1": {
+    "widths": [
+      640,
+      1000,
+      1600
+    ],
+    "width": 1600,
+    "height": 1000
+  },
+  "gallery-white-tower-2": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
+  "gallery-white-tower-3": {
+    "widths": [
+      400,
+      800
+    ],
+    "width": 800,
+    "height": 490
+  },
   "hero-facade": {
     "widths": [
       828,
@@ -78,35 +390,6 @@
     ],
     "width": 1784,
     "height": 882
-  },
-  "news-acp": {
-    "widths": [
-      800,
-      1200
-    ],
-    "width": 1200,
-    "height": 800
-  },
-  "news-finish": {
-    "widths": [
-      220
-    ],
-    "width": 220,
-    "height": 124
-  },
-  "news-fire": {
-    "widths": [
-      220
-    ],
-    "width": 220,
-    "height": 147
-  },
-  "news-manufacturing": {
-    "widths": [
-      220
-    ],
-    "width": 220,
-    "height": 147
   },
   "product-a2": {
     "widths": [
@@ -131,38 +414,6 @@
     ],
     "width": 1080,
     "height": 1080
-  },
-  "project-commercial": {
-    "widths": [
-      880,
-      1200
-    ],
-    "width": 1200,
-    "height": 800
-  },
-  "project-institutional": {
-    "widths": [
-      520,
-      996
-    ],
-    "width": 996,
-    "height": 498
-  },
-  "project-office": {
-    "widths": [
-      520,
-      996
-    ],
-    "width": 996,
-    "height": 664
-  },
-  "project-shopping": {
-    "widths": [
-      520,
-      996
-    ],
-    "width": 996,
-    "height": 664
   },
   "tech-certificates": {
     "widths": [

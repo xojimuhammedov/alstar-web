@@ -4,7 +4,7 @@ import { Brand } from './Brand';
 import { navItems } from './navItems';
 
 export function Footer() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { address } = site;
   const addressLine = [address.street, address.city, address.postalCode].filter(Boolean).join(', ');
 
@@ -13,7 +13,7 @@ export function Footer() {
       <div className="footer-grid">
         <Brand />
         <nav className="footer-nav" aria-label={t.footer.navLabel}>
-          {navItems(t).map((item) => (
+          {navItems(t, locale).map((item) => (
             <a key={item.href} href={item.href}>
               {item.label}
             </a>

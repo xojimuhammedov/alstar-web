@@ -1,6 +1,7 @@
 import { Arrow, Button, delay, Img, SectionHead } from '../components/ui';
 import type { ImageName } from '../config/images';
 import { useI18n } from '../i18n';
+import { CertificateStrip } from './Certificates';
 
 const dotClass: Record<string, string> = { pe: '', b1: 'yellow', a2: 'red' };
 
@@ -48,6 +49,7 @@ export function Products() {
             </article>
           ))}
         </div>
+        <CertificateStrip />
       </div>
     </section>
   );

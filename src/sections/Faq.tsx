@@ -11,7 +11,7 @@ export function Faq() {
   return (
     <section className="section" id="faq" aria-labelledby="faq-title">
       <div className="container faq-grid">
-        <SectionHead index="07" title={t.faq.title} titleId="faq-title" intro={t.faq.intro} />
+        <SectionHead index="08" title={t.faq.title} titleId="faq-title" intro={t.faq.intro} />
         <div className="faq-list">
           {t.faq.items.map((item, i) => (
             <details className="faq-item reveal" style={delay(i * 60)} key={item.q} open={i === 0}>

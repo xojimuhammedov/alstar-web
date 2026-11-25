@@ -25,7 +25,7 @@ export function Technical() {
               </div>
               <div className="tech-body">
                 <h3>{item.title}</h3>
-                <a href="#contact">
+                <a href={item.id === 'certificates' ? '#certificates' : '#contact'}>
                   {t.technical.open} <span className="sr-only">— {item.title}</span>
                   <Arrow />
                 </a>

@@ -1,13 +1,15 @@
 import { useRef } from 'react';
-import { Button, Img, SectionHead } from '../components/ui';
-import type { ImageName } from '../config/images';
+import { Arrow, Button, Img, SectionHead } from '../components/ui';
+import { galleryImage, projects } from '../content/projects';
 import { useScrollFrame } from '../hooks/useScrollFrame';
 import { useI18n } from '../i18n';
+import { routePath } from '../routes';
 
 export function Projects() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const pinRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const page = routePath(locale, { page: 'projects' });
 
   // Vertical scroll drives the horizontal track while the section is pinned (desktop only).
   useScrollFrame((reduced) => {
@@ -29,24 +31,32 @@ export function Projects() {
     <section className="section alt projects" id="projects" aria-labelledby="projects-title">
       <div className="container">
         <SectionHead index="04" title={t.projects.title} titleId="projects-title" intro={t.projects.copy}>
-          <Button href="#contact">{t.projects.cta}</Button>
+          <Button href={page}>{t.projects.cta}</Button>
         </SectionHead>
         <div className="projects-pin" ref={pinRef}>
           <div className="projects-sticky">
             <div className="project-track" ref={trackRef}>
-              {t.projects.items.map((p, i) => (
-                <article className={`project-card ${i === 0 ? 'project-large' : 'project-small'}`} key={p.id}>
+              {projects.map((p, i) => (
+                <a
+                  className={`project-card ${i === 0 ? 'project-large' : 'project-small'}`}
+                  key={p.slug}
+                  href={`${page}#${p.slug}`}
+                >
                   <Img
-                    name={`project-${p.id}` as ImageName}
-                    alt={p.alt}
+                    name={galleryImage(p.slug, 1)}
+                    alt={t.projects.page.mainAlt.replace('{name}', p.title[locale])}
                     sizes={i === 0 ? '(max-width: 760px) 78vw, 880px' : '(max-width: 760px) 78vw, 500px'}
                   />
                   {i === 0 && <span className="featured-tag">{t.projects.featured}</span>}
                   <div className="project-overlay">
-                    <h3>{p.title}</h3>
-                    <small>{t.projects.tag}</small>
+                    <span className="project-index">{String(i + 1).padStart(2, '0')}</span>
+                    <h3>{p.title[locale]}</h3>
+                    <small>{p.finish[locale]}</small>
+                    <span className="project-view">
+                      {t.projects.view} <Arrow />
+                    </span>
                   </div>
-                </article>
+                </a>
               ))}
             </div>
           </div>

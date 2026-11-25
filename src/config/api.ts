@@ -25,6 +25,27 @@ export interface FinishVariantDto {
   name: string;
 }
 
+/** `/api/projects/` item (with `?lang=`). */
+export interface ProjectListDto {
+  id: string;
+  slug: string;
+  order: number;
+  image: string | null;
+  location: string;
+  year: number | null;
+  is_featured: boolean;
+  is_concept: boolean;
+  title: string;
+  image_alt: string;
+}
+
+/** `/api/projects/<slug>/` (with `?lang=`). */
+export interface ProjectDetailDto extends ProjectListDto {
+  description: string;
+  products: string[];
+  images: { id: string; image: string; order: number }[];
+}
+
 /** `/api/finishes/` item (with `?lang=`). */
 export interface FinishDto {
   id: string;

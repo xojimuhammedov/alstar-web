@@ -4,13 +4,15 @@ import { useRef, useState } from 'react';
 import { site, telHref } from '../config/site';
 import { useScrollFrame } from '../hooks/useScrollFrame';
 import { useI18n } from '../i18n';
+import { homeAnchor, useRoute } from '../routes';
 import { Brand } from './Brand';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { navItems } from './navItems';
 import { Arrow, Button } from './ui';
 
 export function Header() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const route = useRoute();
   const ref = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
 
@@ -21,15 +23,15 @@ export function Header() {
       <div className="nav">
         <Brand />
         <nav className="navlinks" aria-label={t.nav.label}>
-          {navItems(t, { withFaq: false }).map((item) => (
-            <a key={item.href} href={item.href}>
+          {navItems(t, locale, { withFaq: false }).map((item) => (
+            <a key={item.href} href={item.href} aria-current={item.key === route.page ? 'page' : undefined}>
               {item.label}
             </a>
           ))}
         </nav>
         <div className="nav-actions">
           <LanguageSwitcher className="lang-desktop" />
-          <Button className="nav-cta" href="#contact">
+          <Button className="nav-cta" href={homeAnchor(locale, 'contact')}>
             {t.nav.cta}
           </Button>
 
@@ -49,7 +51,7 @@ export function Header() {
                   </Dialog.Close>
                 </div>
                 <nav className="drawer-links" aria-label={t.nav.label}>
-                  {navItems(t).map((item, i) => (
+                  {navItems(t, locale).map((item, i) => (
                     <a key={item.href} href={item.href} onClick={() => setOpen(false)}>
                       <small>{String(i + 1).padStart(2, '0')}</small>
                       {item.label}

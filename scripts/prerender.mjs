@@ -9,44 +9,50 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 const serverEntry = path.join(root, 'dist-server/entry-server.js');
 
-const { render, locales, localePath, localeInfo, defaultLocale, getDictionary, site } = await import(
+const { render, locales, localePath, localeInfo, defaultLocale, getDictionary, site, allRoutes, routePath } = await import(
   pathToFileURL(serverEntry).href
 );
 
 const template = await readFile(path.join(dist, 'index.html'), 'utf8');
 const today = new Date().toISOString().slice(0, 10);
 
-// 1. One HTML file per locale: / (default), /ru/, /en/
-for (const locale of locales) {
-  const { lang, head, html } = render(locale);
+// 1. One HTML file per page and locale: /, /ru/, /loyihalar/, /maqolalar/<slug>/, …
+const pages = allRoutes();
+for (const { locale, route } of pages) {
+  const { lang, head, html } = render(locale, route);
   const page = template
     .replace('<!--app-lang-->', lang)
     .replace('<!--app-head-->', head)
     .replace('<!--app-html-->', html);
-  const dir = path.join(dist, localePath(locale));
+  const url = routePath(locale, route);
+  const dir = path.join(dist, url);
   await mkdir(dir, { recursive: true });
   await writeFile(path.join(dir, 'index.html'), page);
-  console.log(`✓ ${localePath(locale)}index.html (${lang})`);
+  console.log(`✓ ${url}index.html (${lang})`);
 }
 
-// 2. sitemap.xml with hreflang alternates
-const alternates = locales
-  .map((l) => `    <xhtml:link rel="alternate" hreflang="${localeInfo[l].hreflang}" href="${site.url}${localePath(l)}"/>`)
-  .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${site.url}${localePath(defaultLocale)}"/>`)
-  .join('\n');
+// 2. sitemap.xml with hreflang alternates (only between languages a page exists in)
+const key = (route) => JSON.stringify(route);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${locales
-  .map(
-    (l) => `  <url>
-    <loc>${site.url}${localePath(l)}</loc>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${pages
+  .map(({ locale, route }) => {
+    const langs = pages.filter((p) => key(p.route) === key(route)).map((p) => p.locale);
+    const alternates =
+      langs.length > 1
+        ? langs
+            .map((l) => `    <xhtml:link rel="alternate" hreflang="${localeInfo[l].hreflang}" href="${site.url}${routePath(l, route)}"/>`)
+            .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${site.url}${routePath(defaultLocale, route)}"/>`)
+            .join('\n') + '\n'
+        : '';
+    const home = route.page === 'home';
+    return `  <url>
+    <loc>${site.url}${routePath(locale, route)}</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>${l === defaultLocale ? '1.0' : '0.9'}</priority>
-${alternates}
-    <image:image><image:loc>${site.url}/og-image.jpg</image:loc></image:image>
-  </url>`,
-  )
+    <changefreq>${home || route.page === 'articles' ? 'weekly' : 'monthly'}</changefreq>
+    <priority>${home ? (locale === defaultLocale ? '1.0' : '0.9') : '0.7'}</priority>
+${alternates}  </url>`;
+  })
   .join('\n')}
 </urlset>
 `;
@@ -95,6 +101,9 @@ ${en.faq.items.map((f) => `### ${f.q}\n\n${f.a}`).join('\n\n')}
 ## Pages
 
 ${locales.map((l) => `- [${localeInfo[l].name}](${site.url}${localePath(l)})`).join('\n')}
+- [Projects](${site.url}${routePath('en', { page: 'projects' })})
+- [Coating plant](${site.url}${routePath('en', { page: 'factory' })})
+- [Articles (Uzbek)](${site.url}${routePath('uz', { page: 'articles' })})
 `;
 await writeFile(path.join(dist, 'llms.txt'), llms);
 console.log('✓ llms.txt');

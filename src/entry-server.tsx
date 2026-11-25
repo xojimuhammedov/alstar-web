@@ -4,17 +4,18 @@ import { renderToString } from 'react-dom/server';
 import { App } from './App';
 import { site } from './config/site';
 import { defaultLocale, getDictionary, localeInfo, localePath, locales, type Locale } from './i18n';
+import { allRoutes, routePath, type Route } from './routes';
 import { renderHead } from './seo/head';
 
-export { defaultLocale, getDictionary, localeInfo, localePath, locales, site };
+export { allRoutes, defaultLocale, getDictionary, localeInfo, localePath, locales, routePath, site };
 
-export function render(locale: Locale) {
+export function render(locale: Locale, route: Route) {
   return {
     lang: localeInfo[locale].hreflang,
-    head: renderHead(locale),
+    head: renderHead(locale, route),
     html: renderToString(
       <StrictMode>
-        <App locale={locale} />
+        <App locale={locale} route={route} />
       </StrictMode>,
     ),
   };

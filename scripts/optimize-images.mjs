@@ -19,10 +19,11 @@ const widthsFor = (name) => {
   if (name.startsWith('product-')) return [560, 840];
   if (name === 'cta-bg') return [1200];
   if (name.startsWith('finish-')) return [648, 911];
-  if (name === 'project-commercial') return [880, 1200];
-  if (name.startsWith('project-')) return [520, 996];
-  if (name === 'news-acp') return [800, 1200];
-  if (name.startsWith('news-')) return [220];
+  // Editorial Gallery: 01 = main 1600×1000, 02–03 = details 800×490.
+  if (/^gallery-.+-1$/.test(name)) return [640, 1000, 1600];
+  if (name.startsWith('gallery-')) return [400, 800];
+  if (name.startsWith('article-')) return [240, 640, 1280];
+  if (name.startsWith('cert-')) return [360, 720, 1100];
   if (name.startsWith('tech-')) return [256];
   return [1200];
 };

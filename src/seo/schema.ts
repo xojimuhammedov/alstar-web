@@ -1,13 +1,18 @@
 // JSON-LD structured data (schema.org). Helps Google rich results and gives AI
 // search engines (ChatGPT, Perplexity, Gemini, Claude) unambiguous facts.
 import { site } from '../config/site';
+import { articleBySlug } from '../content/articles';
+import { imageSet } from '../config/images';
 import { getDictionary, localeInfo, localePath, type Locale } from '../i18n';
+import { routePath, type Route } from '../routes';
+import { pageMeta } from './head';
 
 const abs = (path: string) => `${site.url}${path}`;
 
-export function buildSchema(locale: Locale) {
+export function buildSchema(locale: Locale, route: Route = { page: 'home' }) {
   const t = getDictionary(locale);
-  const pageUrl = abs(localePath(locale));
+  const pageUrl = abs(routePath(locale, route));
+  const meta = pageMeta(locale, route);
   const orgId = `${site.url}/#organization`;
   const websiteId = `${site.url}/#website`;
   const { address, geo } = site;
@@ -72,13 +77,44 @@ export function buildSchema(locale: Locale) {
     '@type': 'WebPage',
     '@id': `${pageUrl}#webpage`,
     url: pageUrl,
-    name: t.meta.title,
-    description: t.meta.description,
+    name: meta.title,
+    description: meta.description,
     inLanguage: localeInfo[locale].hreflang,
     isPartOf: { '@id': websiteId },
     about: { '@id': orgId },
-    primaryImageOfPage: abs('/og-image.jpg'),
+    primaryImageOfPage: meta.image.url,
   };
+
+  if (route.page !== 'home') {
+    const home = abs(localePath(locale));
+    const crumbs = [{ name: t.nav.homeShort, url: home }];
+    if (route.page === 'article') crumbs.push({ name: t.articles.title, url: abs(routePath(locale, { page: 'articles' })) });
+    crumbs.push({ name: meta.title, url: pageUrl });
+    const breadcrumb = {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.url })),
+    };
+    const graph: object[] = [organization, website, { ...webpage, breadcrumb: { '@id': breadcrumb['@id'] } }, breadcrumb];
+    const article = route.page === 'article' ? articleBySlug(route.slug) : undefined;
+    if (article) {
+      graph.push({
+        '@type': 'Article',
+        '@id': `${pageUrl}#article`,
+        headline: article.title,
+        description: article.metaDescription,
+        image: abs(imageSet(article.image).src),
+        datePublished: article.date,
+        dateModified: article.date,
+        inLanguage: localeInfo[locale].hreflang,
+        articleSection: article.category,
+        mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
+        author: { '@id': orgId },
+        publisher: { '@id': orgId },
+      });
+    }
+    return { '@context': 'https://schema.org', '@graph': graph };
+  }
 
   const products = {
     '@type': 'ItemList',

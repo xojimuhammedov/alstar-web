@@ -2,39 +2,45 @@ import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { useReveal } from './hooks/useReveal';
 import { getDictionary, I18nContext, type Locale } from './i18n';
-import { Colours } from './sections/Colours';
-import { Cta } from './sections/Cta';
-import { Faq } from './sections/Faq';
-import { Hero } from './sections/Hero';
-import { News } from './sections/News';
-import { Products } from './sections/Products';
-import { Projects } from './sections/Projects';
-import { Technical } from './sections/Technical';
-import { Why } from './sections/Why';
+import { ArticlePage } from './pages/ArticlePage';
+import { ArticlesPage } from './pages/ArticlesPage';
+import { FactoryPage } from './pages/FactoryPage';
+import { HomePage } from './pages/HomePage';
+import { ProjectsPage } from './pages/ProjectsPage';
+import { RouteContext, type Route } from './routes';
 
-export function App({ locale }: { locale: Locale }) {
+function Page({ route }: { route: Route }) {
+  switch (route.page) {
+    case 'projects':
+      return <ProjectsPage />;
+    case 'factory':
+      return <FactoryPage />;
+    case 'articles':
+      return <ArticlesPage />;
+    case 'article':
+      return <ArticlePage slug={route.slug} />;
+    default:
+      return <HomePage />;
+  }
+}
+
+export function App({ locale, route }: { locale: Locale; route: Route }) {
   const t = getDictionary(locale);
   useReveal();
 
   return (
     <I18nContext.Provider value={{ locale, t }}>
-      <a className="skip-link" href="#main">
-        {t.nav.skip}
-      </a>
-      <Header />
-      <main id="main" tabIndex={-1}>
-        <span id="top" />
-        <Hero />
-        <Why />
-        <Products />
-        <Colours />
-        <Projects />
-        <News />
-        <Technical />
-        <Faq />
-        <Cta />
-      </main>
-      <Footer />
+      <RouteContext.Provider value={route}>
+        <a className="skip-link" href="#main">
+          {t.nav.skip}
+        </a>
+        <Header />
+        <main id="main" tabIndex={-1}>
+          <span id="top" />
+          <Page route={route} />
+        </main>
+        <Footer />
+      </RouteContext.Provider>
     </I18nContext.Provider>
   );
 }
