@@ -295,6 +295,10 @@ export const ru: Dictionary = {
     technical: 'Технический вопрос',
     phoneLabel: 'Телефон',
     emailLabel: 'Email',
+    addressLabel: 'Главный офис',
+    branchLabel: 'Филиал в Казахстане',
+    socialLabel: 'Социальные сети',
+    mapLink: 'Открыть на карте',
   },
   footer: {
     rights: 'Все права защищены.',

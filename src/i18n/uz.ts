@@ -295,6 +295,10 @@ export const uz: Dictionary = {
     technical: 'Texnik savol',
     phoneLabel: 'Telefon',
     emailLabel: 'Email',
+    addressLabel: 'Bosh ofis',
+    branchLabel: 'Qozog‘iston filiali',
+    socialLabel: 'Ijtimoiy tarmoqlar',
+    mapLink: 'Xaritada ko‘rish',
   },
   footer: {
     rights: 'Barcha huquqlar himoyalangan.',

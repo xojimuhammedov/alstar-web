@@ -1,12 +1,11 @@
 import { site, telHref } from '../config/site';
 import { useI18n } from '../i18n';
 import { Brand } from './Brand';
+import { SocialLinks } from './SocialLinks';
 import { navItems } from './navItems';
 
 export function Footer() {
   const { t, locale } = useI18n();
-  const { address } = site;
-  const addressLine = [address.street, address.city, address.postalCode].filter(Boolean).join(', ');
 
   return (
     <footer>
@@ -26,11 +25,14 @@ export function Footer() {
             </a>
           ))}
           <a href={`mailto:${site.email}`}>{site.email}</a>
-          {addressLine && <span>{addressLine}</span>}
+          <a href={site.mapUrl} target="_blank" rel="noopener noreferrer">
+            {site.addressText[locale]}
+          </a>
+          <SocialLinks label={t.cta.socialLabel} className="footer-social" />
         </address>
       </div>
       <p className="footer-legal">
-        © {site.foundingYear}–{new Date().getFullYear()} {site.legalName}. {t.footer.rights}
+        © {site.foundingYear}–{new Date().getFullYear()} {site.name} · {site.legalName}. {t.footer.rights}
       </p>
     </footer>
   );

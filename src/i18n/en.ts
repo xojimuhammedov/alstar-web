@@ -295,6 +295,10 @@ export const en = {
     technical: 'Technical inquiry',
     phoneLabel: 'Phone',
     emailLabel: 'Email',
+    addressLabel: 'Head office',
+    branchLabel: 'Kazakhstan branch',
+    socialLabel: 'Social media',
+    mapLink: 'View on map',
   },
   footer: {
     rights: 'All rights reserved.',

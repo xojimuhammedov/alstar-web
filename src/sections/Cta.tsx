@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 import { Button, Img } from '../components/ui';
+import { MapPin } from 'lucide-react';
+import { SocialLinks } from '../components/SocialLinks';
 import { site, telHref } from '../config/site';
 import { useScrollFrame } from '../hooks/useScrollFrame';
 import { useI18n } from '../i18n';
@@ -7,7 +9,7 @@ import { useI18n } from '../i18n';
 const mailto = (subject: string) => `mailto:${site.email}?subject=${encodeURIComponent(`${site.name} — ${subject}`)}`;
 
 export function Cta() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const bgRef = useRef<HTMLDivElement>(null);
 
   useScrollFrame((reduced) => {
@@ -54,6 +56,23 @@ export function Cta() {
           <span>
             <small>{t.cta.emailLabel}</small>
             <a href={`mailto:${site.email}`}>{site.email}</a>
+          </span>
+          <span>
+            <small>{t.cta.addressLabel}</small>
+            <a href={site.mapUrl} target="_blank" rel="noopener noreferrer" className="cta-map">
+              {site.addressText[locale]}
+              <span className="cta-map-link">
+                <MapPin size={13} strokeWidth={1.6} aria-hidden="true" /> {t.cta.mapLink}
+              </span>
+            </a>
+          </span>
+          <span>
+            <small>{t.cta.branchLabel}</small>
+            {site.branchText[locale]}
+          </span>
+          <span>
+            <small>{t.cta.socialLabel}</small>
+            <SocialLinks label={t.cta.socialLabel} />
           </span>
         </address>
       </div>
