@@ -4,6 +4,7 @@ import { useReveal } from './hooks/useReveal';
 import { getDictionary, I18nContext, type Locale } from './i18n';
 import { ArticlePage } from './pages/ArticlePage';
 import { ArticlesPage } from './pages/ArticlesPage';
+import { ColoursPage } from './pages/ColoursPage';
 import { FactoryPage } from './pages/FactoryPage';
 import { HomePage } from './pages/HomePage';
 import { InstallationPage } from './pages/InstallationPage';
@@ -16,6 +17,8 @@ function Page({ route }: { route: Route }) {
   switch (route.page) {
     case 'products':
       return <ProductsPage />;
+    case 'colours':
+      return <ColoursPage />;
     case 'technical':
       return <TechnicalPage />;
     case 'installation':

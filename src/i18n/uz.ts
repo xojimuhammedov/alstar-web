@@ -102,6 +102,13 @@ export const uz: Dictionary = {
     altSuffix: '— alyuminiy kompozit panel',
     all: 'Barchasi',
     catalogTitle: 'Ranglar katalogi',
+    page: {
+      metaTitle: 'Ranglar katalogi — ALSTAR alyuminiy kompozit panellar ranglari va teksturalari',
+      metaDescription:
+        'ALSTAR ranglar katalogi: mat, yaltiroq, metallik, ko‘zgu, sparkling, yog‘och va marmar teksturalari — ALS kodlari va RAL raqamlari bilan.',
+      kicker: 'ALSTAR · Ranglar va teksturalar',
+      intro: 'Katalogdagi barcha ranglar — bo‘limlar bo‘yicha, kod, nom yoki RAL raqami bilan qidiring.',
+    },
     filterLabel: 'Tekstura bo‘yicha filtr',
     search: 'Kod, nom yoki RAL bo‘yicha qidirish',
     colourOne: 'ta rang',

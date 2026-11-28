@@ -8,6 +8,7 @@ import { defaultLocale, localePath, locales, type Locale } from './i18n';
 export type Route =
   | { page: 'home' }
   | { page: 'products' }
+  | { page: 'colours' }
   | { page: 'technical' }
   | { page: 'installation' }
   | { page: 'projects' }
@@ -18,6 +19,7 @@ export type Route =
 /** URL segment per page (shared by all locales). */
 export const segments = {
   products: 'mahsulotlar',
+  colours: 'ranglar',
   technical: 'texnik-markaz',
   projects: 'loyihalar',
   factory: 'boyoq-zavodi',
@@ -66,6 +68,7 @@ export function parseRoute(pathname: string): { locale: Locale; route: Route } {
   const [first, second] = parts;
   let route: Route = { page: 'home' };
   if (first === segments.products) route = { page: 'products' };
+  else if (first === segments.colours) route = { page: 'colours' };
   else if (first === segments.technical)
     route = second === installationSegment ? { page: 'installation' } : { page: 'technical' };
   else if (first === segments.projects) route = { page: 'projects' };
@@ -82,6 +85,7 @@ export function allRoutes(): { locale: Locale; route: Route }[] {
   const pages: Route[] = [
     { page: 'home' },
     { page: 'products' },
+    { page: 'colours' },
     { page: 'technical' },
     { page: 'installation' },
     { page: 'projects' },

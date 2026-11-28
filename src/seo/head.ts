@@ -34,6 +34,8 @@ export function pageMeta(locale: Locale, route: Route): PageMeta {
   switch (route.page) {
     case 'products':
       return { ...base, title: productsPage[locale].metaTitle, description: productsPage[locale].metaDescription };
+    case 'colours':
+      return { ...base, title: t.colours.page.metaTitle, description: t.colours.page.metaDescription };
     case 'technical':
       return { ...base, title: technicalPage[locale].metaTitle, description: technicalPage[locale].metaDescription };
     case 'installation':

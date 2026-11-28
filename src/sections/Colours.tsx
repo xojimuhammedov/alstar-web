@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Search, X } from 'lucide-react';
 import { Button, delay, Img, SectionHead } from '../components/ui';
 import { getJson, type FinishVariantDto } from '../config/api';
@@ -7,10 +7,9 @@ import manifest from '../config/image-manifest.json';
 import type { ImageName } from '../config/images';
 import { useFinishes } from '../hooks/useFinishes';
 import { useI18n, type Dictionary, type Locale } from '../i18n';
+import { pageHref } from '../routes';
 
 const ALL = 'all';
-/** Colours shown under "All" before "show more" (API catalogue only; a category always shows all). */
-const PREVIEW_COUNT = 12;
 
 interface Card {
   id: string;
@@ -119,14 +118,12 @@ function SwatchGrid({
   );
 }
 
+/** Home-page colour section: finish cards that open the catalogue page (/ranglar/). */
 export function Colours() {
   const { t, locale } = useI18n();
   const c = t.colours;
   const finishes = useFinishes(locale);
-  const [filter, setFilter] = useState(ALL);
-  const [query, setQuery] = useState('');
-  const [expanded, setExpanded] = useState(false);
-  const catalogRef = useRef<HTMLDivElement>(null);
+  const page = pageHref(locale, { page: 'colours' });
   const isStatic = finishes.status === 'ready' && finishes.source === 'static';
   /** Which catalogue filter a finish card opens (the static catalogue groups mirror/sparkling together). */
   const target = (cardId: string) => (isStatic ? (cardToGroup[cardId] ?? ALL) : cardId);
@@ -152,11 +149,72 @@ export function Colours() {
           image: null,
         }));
 
+  return (
+    <section className="section finishes" id="colours" aria-labelledby="colours-title">
+      <div className="container">
+        <SectionHead index="03" title={c.title} titleId="colours-title" intro={c.copy}>
+          <Button href={page}>{c.cta}</Button>
+        </SectionHead>
+
+        <ul className="finish-grid" role="list">
+          {cards.map((card, i) => {
+            // Only cards present at page load are watched by useReveal; ones that
+            // exist only in the API (added in the admin) render visible straight away.
+            const isBundled = c.items.some((item) => item.id === card.id);
+            const to = target(card.id);
+            return (
+              <li className={isBundled ? 'reveal' : undefined} style={isBundled ? delay((i % 4) * 70) : undefined} key={card.id}>
+                <a className="finish-card" href={to === ALL ? page : `${page}#${to}`} aria-label={fill(c.open, { name: card.name })}>
+                  <PanelImage card={card} alt={`${card.name} ${c.altSuffix}`} />
+                  <span className="finish-label">
+                    <span className="finish-name">{card.name}</span>
+                    {card.sub && <span className="finish-sub">{card.sub}</span>}
+                    {card.count != null && <span className="finish-count">{countLabel(c, locale, card.count)}</span>}
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * The full colour catalogue (page /ranglar/): filter chips, search and every swatch.
+ * "#<group>" in the URL selects a group, so home-page cards can link straight to one.
+ */
+export function ColourCatalog() {
+  const { t, locale } = useI18n();
+  const c = t.colours;
+  const finishes = useFinishes(locale);
+  const [filter, setFilter] = useState(ALL);
+  const [query, setQuery] = useState('');
+  const isStatic = finishes.status === 'ready' && finishes.source === 'static';
+  const groups = finishes.status === 'ready' ? finishes.data : [];
+
+  // Pick the group from the URL hash (and keep following it on back/forward).
+  useEffect(() => {
+    const fromHash = () => {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      setFilter(groups.some((g) => g.slug === id) ? id : ALL);
+    };
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
+    return () => window.removeEventListener('hashchange', fromHash);
+    // groups changes identity on every render; its slugs are what matter.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groups.map((g) => g.slug).join()]);
+
+  const choose = (id: string) => {
+    setFilter(id);
+    window.history.replaceState(null, '', id === ALL ? window.location.pathname : `#${id}`);
+  };
+
   const variants: Variant[] = useMemo(
-    () =>
-      finishes.status === 'ready'
-        ? finishes.data.flatMap((f) => f.variants.map((v) => ({ ...v, finishName: f.name })))
-        : [],
+    () => groups.flatMap((f) => f.variants.map((v) => ({ ...v, finishName: f.name }))),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [finishes],
   );
 
@@ -165,144 +223,69 @@ export function Colours() {
   const filtered = variants.filter(
     (v) => (filter === ALL || v.finish === filter) && (!query.trim() || !search || search.ids.has(v.id)),
   );
-  const limited = filter === ALL && !query.trim() && !expanded;
-  /** "All" expanded in the static catalogue: every colour, page by page as in the printed catalog. */
-  const grouped = isStatic && filter === ALL && !query.trim() && expanded;
-  const visible = limited ? filtered.slice(0, PREVIEW_COUNT) : filtered;
-  const hidden = filtered.length - visible.length;
+  /** "All" without a search: every colour, group by group as in the printed catalog. */
+  const grouped = filter === ALL && !query.trim();
 
-  const select = (id: string, expand = false) => {
-    setFilter(id);
-    setQuery('');
-    setExpanded(expand);
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    catalogRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-  };
-
-  const chips = [
-    { id: ALL, name: c.all, count: variants.length },
-    ...(finishes.status === 'ready' ? finishes.data : []).map((f) => ({ id: f.slug, name: f.name, count: f.variants_count })),
-  ];
+  const chips = [{ id: ALL, name: c.all, count: variants.length }, ...groups.map((f) => ({ id: f.slug, name: f.name, count: f.variants_count }))];
 
   return (
-    <section className="section finishes" id="colours" aria-labelledby="colours-title">
-      <div className="container">
-        <SectionHead index="03" title={c.title} titleId="colours-title" intro={c.copy}>
-          <Button
-            href="#colour-catalog"
-            onClick={(e) => {
-              e.preventDefault();
-              // "Barcha ranglar" opens the whole catalogue at once.
-              select(ALL, true);
-            }}
-          >
-            {c.cta}
-          </Button>
-        </SectionHead>
-
-        <ul className="finish-grid" role="list">
-          {cards.map((card, i) => {
-            const active = finishes.status === 'ready' && filter !== ALL && filter === target(card.id);
-            // Only cards present at page load are watched by useReveal; ones that
-            // exist only in the API (added in the admin) render visible straight away.
-            const isStatic = c.items.some((item) => item.id === card.id);
-            return (
-              <li className={isStatic ? 'reveal' : undefined} style={isStatic ? delay((i % 4) * 70) : undefined} key={card.id}>
-                <button
-                  type="button"
-                  className={`finish-card${active ? ' is-active' : ''}`}
-                  onClick={() => select(target(card.id))}
-                  aria-controls="colour-catalog"
-                  aria-label={fill(c.open, { name: card.name })}
-                >
-                  <PanelImage card={card} alt={`${card.name} ${c.altSuffix}`} />
-                  <span className="finish-label">
-                    <span className="finish-name">{card.name}</span>
-                    {card.sub && <span className="finish-sub">{card.sub}</span>}
-                    {card.count != null && <span className="finish-count">{countLabel(c, locale, card.count)}</span>}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-
-        <div className="finish-catalog" id="colour-catalog" ref={catalogRef}>
-            <div className="catalog-head">
-              <h3 className="catalog-title">{c.catalogTitle}</h3>
-              {finishes.status === 'ready' && (
-                <label className="catalog-search">
-                  <Search size={16} aria-hidden="true" />
-                  <span className="sr-only">{c.search}</span>
-                  <input
-                    type="search"
-                    value={query}
-                    placeholder={c.search}
-                    onChange={(e) => setQuery(e.target.value)}
-                    autoComplete="off"
-                    spellCheck={false}
-                  />
-                  {query && (
-                    <button type="button" className="catalog-clear" onClick={() => setQuery('')} aria-label={c.clear}>
-                      <X size={14} aria-hidden="true" />
-                    </button>
-                  )}
-                </label>
-              )}
-            </div>
-
-            {finishes.status === 'loading' && <p className="catalog-status">{c.loading}</p>}
-
-            {finishes.status === 'ready' && (
-              <>
-                <div className="chip-row" role="group" aria-label={c.filterLabel}>
-                  {chips.map((chip) => (
-                    <button
-                      type="button"
-                      key={chip.id}
-                      className="chip"
-                      aria-pressed={filter === chip.id}
-                      onClick={() => {
-                        setFilter(chip.id);
-                        setExpanded(false);
-                      }}
-                    >
-                      {chip.name}
-                      <span className="n">{chip.count}</span>
-                    </button>
-                  ))}
-                </div>
-
-                <p className="sr-only" aria-live="polite">
-                  {countLabel(c, locale, filtered.length)}
-                </p>
-
-                {filtered.length === 0 && !searching ? (
-                  <p className="catalog-status">{c.empty}</p>
-                ) : grouped ? (
-                  finishes.data.map((f) => (
-                    <div className="catalog-group" key={f.slug}>
-                      <h4 className="catalog-group-title">
-                        {f.name}
-                        <span className="n">{countLabel(c, locale, f.variants_count)}</span>
-                      </h4>
-                      <SwatchGrid items={variants.filter((v) => v.finish === f.slug)} showFinish={false} altSuffix={c.altSuffix} />
-                    </div>
-                  ))
-                ) : (
-                  <SwatchGrid items={visible} showFinish={filter === ALL} altSuffix={c.altSuffix} searching={searching} />
-                )}
-
-                {hidden > 0 && (
-                  <button type="button" className="btn catalog-more" onClick={() => setExpanded(true)}>
-                    {fill(c.showMore, { n: hidden })}
-                    <span aria-hidden="true">↓</span>
-                  </button>
-                )}
-              </>
-            )}
+    <div className="finish-catalog is-page" id="colour-catalog">
+      <div className="catalog-head">
+        <div className="chip-row" role="group" aria-label={c.filterLabel}>
+          {finishes.status === 'ready' &&
+            chips.map((chip) => (
+              <button type="button" key={chip.id} className="chip" aria-pressed={filter === chip.id} onClick={() => choose(chip.id)}>
+                {chip.name}
+                <span className="n">{chip.count}</span>
+              </button>
+            ))}
         </div>
+        {finishes.status === 'ready' && (
+          <label className="catalog-search">
+            <Search size={16} aria-hidden="true" />
+            <span className="sr-only">{c.search}</span>
+            <input
+              type="search"
+              value={query}
+              placeholder={c.search}
+              onChange={(e) => setQuery(e.target.value)}
+              autoComplete="off"
+              spellCheck={false}
+            />
+            {query && (
+              <button type="button" className="catalog-clear" onClick={() => setQuery('')} aria-label={c.clear}>
+                <X size={14} aria-hidden="true" />
+              </button>
+            )}
+          </label>
+        )}
       </div>
-    </section>
+
+      {finishes.status === 'loading' && <p className="catalog-status">{c.loading}</p>}
+
+      {finishes.status === 'ready' && (
+        <>
+          <p className="sr-only" aria-live="polite">
+            {countLabel(c, locale, filtered.length)}
+          </p>
+
+          {filtered.length === 0 && !searching ? (
+            <p className="catalog-status">{c.empty}</p>
+          ) : grouped ? (
+            groups.map((f) => (
+              <section className="catalog-group" key={f.slug} aria-label={f.name}>
+                <h2 className="catalog-group-title">
+                  {f.name}
+                  <span className="n">{countLabel(c, locale, f.variants_count)}</span>
+                </h2>
+                <SwatchGrid items={variants.filter((v) => v.finish === f.slug)} showFinish={false} altSuffix={c.altSuffix} />
+              </section>
+            ))
+          ) : (
+            <SwatchGrid items={filtered} showFinish={filter === ALL} altSuffix={c.altSuffix} searching={searching} />
+          )}
+        </>
+      )}
+    </div>
   );
 }

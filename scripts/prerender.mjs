@@ -102,6 +102,7 @@ ${en.faq.items.map((f) => `### ${f.q}\n\n${f.a}`).join('\n\n')}
 
 ${locales.map((l) => `- [${localeInfo[l].name}](${site.url}${localePath(l)})`).join('\n')}
 - [Products and specification](${site.url}${routePath('en', { page: 'products' })})
+- [Colour catalogue](${site.url}${routePath('en', { page: 'colours' })})
 - [Technical center](${site.url}${routePath('en', { page: 'technical' })})
 - [Installation guide (Uzbek)](${site.url}${routePath('uz', { page: 'installation' })})
 - [Projects](${site.url}${routePath('en', { page: 'projects' })})

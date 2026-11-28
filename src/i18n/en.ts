@@ -102,6 +102,13 @@ export const en = {
     altSuffix: 'finish aluminium composite panel',
     all: 'All',
     catalogTitle: 'Colour catalogue',
+    page: {
+      metaTitle: 'Colour catalogue — ALSTAR aluminium composite panel colours and textures',
+      metaDescription:
+        'ALSTAR colour catalogue: matte, glossy, metallic, mirror, sparkling, wood and marble finishes — with ALS codes and RAL numbers.',
+      kicker: 'ALSTAR · Colours and textures',
+      intro: 'Every colour in the catalog, section by section — search by code, name or RAL number.',
+    },
     filterLabel: 'Filter by finish',
     search: 'Search by code, name or RAL',
     colourOne: 'colour',
