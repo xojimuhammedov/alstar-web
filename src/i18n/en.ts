@@ -72,7 +72,7 @@ export const en = {
         type: 'Fire-retardant core',
         name: 'B1 / FR-B1',
         desc: 'Engineered core formulation for enhanced fire resistance.',
-        spec: 'Fire-retardant core · B1',
+        spec: 'Fire-retardant · EN 13501-1 B-s1, d0',
         imageAlt: 'B1 / FR-B1 fire-retardant aluminium composite panel',
       },
       {
@@ -80,7 +80,7 @@ export const en = {
         type: 'Mineral core',
         name: 'A2 / FR-A2',
         desc: 'Non-combustible core for high-rise and demanding façades.',
-        spec: 'Non-combustible core · A2',
+        spec: 'Non-combustible · EN 13501-1 A2-s1, d0',
         imageAlt: 'A2 / FR-A2 non-combustible mineral-core aluminium composite panel',
       },
     ],

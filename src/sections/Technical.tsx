@@ -1,9 +1,19 @@
 import { Arrow, Button, delay, Img, SectionHead } from '../components/ui';
 import type { ImageName } from '../config/images';
-import { useI18n } from '../i18n';
+import { defaultLocale, useI18n } from '../i18n';
+import { pageHref } from '../routes';
 
 export function Technical() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const center = pageHref(locale, { page: 'technical' });
+  const href: Record<string, string> = {
+    datasheets: `${center}#datasheets`,
+    installation: locale === defaultLocale ? pageHref(locale, { page: 'installation' }) : `${center}#installation`,
+    certificates: '#certificates',
+    // Opens the fire-safety certificate in the carousel below.
+    fire: '#cert-fire-b1',
+    downloads: `${center}#downloads`,
+  };
   return (
     <section className="section alt" id="technical" aria-labelledby="technical-title">
       <div className="container">
@@ -14,7 +24,7 @@ export function Technical() {
               <br />
               {t.technical.aside[1]}
             </p>
-            <Button href="#contact">{t.technical.cta}</Button>
+            <Button href={center}>{t.technical.cta}</Button>
           </div>
         </SectionHead>
         <div className="tech-grid">
@@ -25,7 +35,7 @@ export function Technical() {
               </div>
               <div className="tech-body">
                 <h3>{item.title}</h3>
-                <a href={item.id === 'certificates' ? '#certificates' : '#contact'}>
+                <a href={href[item.id] ?? center}>
                   {t.technical.open} <span className="sr-only">— {item.title}</span>
                   <Arrow />
                 </a>

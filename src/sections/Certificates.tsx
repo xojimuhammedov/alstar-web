@@ -6,7 +6,8 @@ import { certificates, type Certificate } from '../content/certificates';
 import { prefersReducedMotion } from '../hooks/useScrollFrame';
 import { useI18n } from '../i18n';
 
-const AUTOPLAY_MS = 3800;
+/** Slow enough to read each certificate (ALSTAR: "animatsiya juda tez o'tib ketadi"). Keep in sync with .cert-progress. */
+const AUTOPLAY_MS = 6500;
 const n = certificates.length;
 
 /** Signed distance from the active slide, wrapped so the ring has no ends. */
@@ -52,6 +53,23 @@ export function Certificates({ index }: { index: string }) {
     if (prefersReducedMotion()) setPlaying(false);
   }, []);
 
+  // Deep link "#cert-<id>" (e.g. from the Technical center) opens that certificate.
+  useEffect(() => {
+    const openFromHash = () => {
+      const m = /^#cert-(.+)$/.exec(window.location.hash);
+      const i = m ? certificates.findIndex((x) => x.id === decodeURIComponent(m[1])) : -1;
+      if (i < 0) return;
+      setActive(i);
+      setPlaying(false);
+      // Scroll first: the dialog locks page scrolling while it is open.
+      stageRef.current?.closest('section')?.scrollIntoView({ block: 'start' });
+      window.requestAnimationFrame(() => setOpen(true));
+    };
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+    return () => window.removeEventListener('hashchange', openFromHash);
+  }, []);
+
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -89,6 +107,14 @@ export function Certificates({ index }: { index: string }) {
   };
 
   const current = certificates[active];
+
+  const onOpenChange = (value: boolean) => {
+    setOpen(value);
+    // Drop "#cert-<id>" on close so the same link opens the certificate again.
+    if (!value && window.location.hash.startsWith('#cert-')) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  };
 
   return (
     <section className="section certs" id="certificates" aria-labelledby="certificates-title">
@@ -193,7 +219,7 @@ export function Certificates({ index }: { index: string }) {
         </div>
       </div>
 
-      <CertificateDialog cert={current} open={open} onOpenChange={setOpen} onPrev={prev} onNext={next} />
+      <CertificateDialog cert={current} open={open} onOpenChange={onOpenChange} onPrev={prev} onNext={next} />
     </section>
   );
 }

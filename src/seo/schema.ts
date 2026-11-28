@@ -89,6 +89,7 @@ export function buildSchema(locale: Locale, route: Route = { page: 'home' }) {
     const home = abs(localePath(locale));
     const crumbs = [{ name: t.nav.homeShort, url: home }];
     if (route.page === 'article') crumbs.push({ name: t.articles.title, url: abs(routePath(locale, { page: 'articles' })) });
+    if (route.page === 'installation') crumbs.push({ name: t.nav.technical, url: abs(routePath(locale, { page: 'technical' })) });
     crumbs.push({ name: meta.title, url: pageUrl });
     const breadcrumb = {
       '@type': 'BreadcrumbList',

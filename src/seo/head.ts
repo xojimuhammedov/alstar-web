@@ -2,6 +2,9 @@
 // build time (scripts/prerender.mjs), so crawlers get everything without JS.
 import { site } from '../config/site';
 import { articleBySlug } from '../content/articles';
+import { installationGuide } from '../content/installation';
+import { productsPage } from '../content/products';
+import { technicalPage } from '../content/technical';
 import { imageSet } from '../config/images';
 import { defaultLocale, getDictionary, localeInfo, locales, type Locale } from '../i18n';
 import { routeExists, routePath, stripBase, type Route } from '../routes';
@@ -29,6 +32,12 @@ export function pageMeta(locale: Locale, route: Route): PageMeta {
   const t = getDictionary(locale);
   const base = { image: defaultImage, imageAlt: t.meta.ogImageAlt, type: 'website' as const };
   switch (route.page) {
+    case 'products':
+      return { ...base, title: productsPage[locale].metaTitle, description: productsPage[locale].metaDescription };
+    case 'technical':
+      return { ...base, title: technicalPage[locale].metaTitle, description: technicalPage[locale].metaDescription };
+    case 'installation':
+      return { ...base, title: installationGuide.seoTitle, description: installationGuide.metaDescription };
     case 'projects':
       return { ...base, title: t.projects.page.metaTitle, description: t.projects.page.metaDescription };
     case 'factory':

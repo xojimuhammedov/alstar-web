@@ -6,11 +6,20 @@ import { ArticlePage } from './pages/ArticlePage';
 import { ArticlesPage } from './pages/ArticlesPage';
 import { FactoryPage } from './pages/FactoryPage';
 import { HomePage } from './pages/HomePage';
+import { InstallationPage } from './pages/InstallationPage';
+import { ProductsPage } from './pages/ProductsPage';
+import { TechnicalPage } from './pages/TechnicalPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { RouteContext, type Route } from './routes';
 
 function Page({ route }: { route: Route }) {
   switch (route.page) {
+    case 'products':
+      return <ProductsPage />;
+    case 'technical':
+      return <TechnicalPage />;
+    case 'installation':
+      return <InstallationPage />;
     case 'projects':
       return <ProjectsPage />;
     case 'factory':

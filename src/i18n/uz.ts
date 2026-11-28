@@ -72,8 +72,7 @@ export const uz: Dictionary = {
         type: 'Maxsus tarkibli o‘zak',
         name: 'ALSTAR B1',
         desc: 'Maxsus tarkibli o‘zakka ega kompozit panel.',
-        // TODO: confirm this wording against the product documents before launch
-        spec: 'Yong‘inga chidamli o‘zak · B1',
+        spec: 'Yong‘inga chidamli · EN 13501-1 B-s1, d0',
         imageAlt: 'ALSTAR B1 maxsus tarkibli o‘zakli alyuminiy kompozit panel',
       },
       {
@@ -81,8 +80,7 @@ export const uz: Dictionary = {
         type: 'Mineral o‘zak',
         name: 'ALSTAR A2',
         desc: 'Yuqori yong‘in xavfsizligi talablari uchun kompozit panel.',
-        // TODO: confirm this wording against the product documents before launch
-        spec: 'Yonmaydigan o‘zak · A2',
+        spec: 'Yonmaydigan · EN 13501-1 A2-s1, d0',
         imageAlt: 'ALSTAR A2 mineral o‘zakli alyuminiy kompozit panel',
       },
     ],

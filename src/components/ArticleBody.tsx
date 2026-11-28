@@ -21,7 +21,9 @@ export const headingsOf = (body: string) =>
     .filter((b) => b.startsWith('## '))
     .map((b) => ({ id: slugify(b.slice(3)), text: b.slice(3) }));
 
-/** Renders the article body format: blank-line separated paragraphs, "## " sub-headings. */
+const isList = (block: string) => block.split('\n').every((line) => line.startsWith('- '));
+
+/** Renders the article body format: blank-line separated paragraphs, "## " sub-headings, "- " lists. */
 export function ArticleBody({ body }: { body: string }) {
   return (
     <div className="prose">
@@ -30,6 +32,12 @@ export function ArticleBody({ body }: { body: string }) {
           <h2 key={i} id={slugify(block.slice(3))}>
             {block.slice(3)}
           </h2>
+        ) : isList(block) ? (
+          <ul key={i}>
+            {block.split('\n').map((line, j) => (
+              <li key={j}>{inline(line.slice(2))}</li>
+            ))}
+          </ul>
         ) : (
           <p key={i} className={i === 0 ? 'lead' : undefined}>
             {inline(block)}

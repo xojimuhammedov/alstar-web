@@ -16,48 +16,105 @@ const isLight = (hex: string) => {
 
 const heroCycle = ['RAL 7016', 'RAL 3020', 'RAL 9006', 'RAL 5015', 'RAL 1021', 'RAL 9016'];
 
-/** Aluminium coil unrolling a painted strip. Colour comes from the --coil custom property. */
+/** Face ring ellipse of the coil (the face is seen at an angle, so circles become ellipses). */
+const FACE = { cx: 196, cy: 214, rx: 104, ry: 168 };
+/** Depth of the coil: the back face sits up and to the right of the front face. */
+const DEPTH = { x: 168, y: -34 };
+
+/**
+ * Aluminium coil in 3D (lying on its side) unrolling a painted strip.
+ * Colour comes from the --coil custom property; the rings "spin" by moving their dashes.
+ */
 function Coil({ label }: { label: string }) {
-  const rings = Array.from({ length: 14 }, (_, i) => 46 + i * 6);
+  const { cx, cy, rx, ry } = FACE;
+  const bx = cx + DEPTH.x;
+  const by = cy + DEPTH.y;
+  const rings = Array.from({ length: 15 }, (_, i) => 50 + i * 8);
+  // Strip leaves the coil along its bottom edge and runs forward-right over the floor.
+  const p1 = { x: cx + 8, y: cy + ry - 4 };
+  const p2 = { x: bx + 4, y: by + ry - 2 };
+  const L = { x: 250, y: 46 };
+  const strip = `M${p1.x} ${p1.y} L${p2.x} ${p2.y} L${p2.x + L.x} ${p2.y + L.y} L${p1.x + L.x} ${p1.y + L.y} Z`;
   return (
-    <svg className="coil" viewBox="0 0 640 420" role="img" aria-label={label}>
+    <svg className="coil" viewBox="0 0 660 470" role="img" aria-label={label}>
       <defs>
-        <radialGradient id="coil-face" cx="45%" cy="40%" r="70%">
-          <stop offset="0" stopColor="#e9eaec" />
-          <stop offset="0.55" stopColor="#9a9ca0" />
-          <stop offset="1" stopColor="#4b4d51" />
+        <radialGradient id="coil-face" cx="42%" cy="36%" r="75%">
+          <stop offset="0" stopColor="#f1f2f3" />
+          <stop offset="0.5" stopColor="#a9abaf" />
+          <stop offset="1" stopColor="#56585c" />
         </radialGradient>
-        <linearGradient id="coil-strip" x1="0" x2="1">
-          <stop offset="0" style={{ stopColor: 'var(--coil)' }} stopOpacity="0.85" />
-          <stop offset="1" style={{ stopColor: 'var(--coil)' }} />
+        <linearGradient id="coil-body-shade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#fff" stopOpacity="0.45" />
+          <stop offset="0.28" stopColor="#fff" stopOpacity="0.08" />
+          <stop offset="0.7" stopColor="#000" stopOpacity="0.25" />
+          <stop offset="1" stopColor="#000" stopOpacity="0.6" />
+        </linearGradient>
+        <linearGradient id="coil-strip-shade" x1="0" y1="0" x2="1" y2="0.3">
+          <stop offset="0" stopColor="#000" stopOpacity="0.45" />
+          <stop offset="0.35" stopColor="#000" stopOpacity="0.1" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0.12" />
         </linearGradient>
         <linearGradient id="coil-shine" x1="0" x2="1">
           <stop offset="0" stopColor="#fff" stopOpacity="0" />
-          <stop offset="0.5" stopColor="#fff" stopOpacity="0.45" />
+          <stop offset="0.5" stopColor="#fff" stopOpacity="0.4" />
           <stop offset="1" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
         <clipPath id="coil-strip-clip">
-          <path d="M214 316 L640 286 L640 344 L214 376 Z" />
+          <path d={strip} />
         </clipPath>
       </defs>
+
       {/* floor shadow */}
-      <ellipse cx="230" cy="392" rx="190" ry="16" fill="#000" opacity="0.45" />
-      {/* unrolled strip */}
+      <ellipse cx={cx + 150} cy={cy + ry + 40} rx="250" ry="26" fill="#000" opacity="0.5" />
+
+      {/* unrolled strip on the floor */}
       <g clipPath="url(#coil-strip-clip)">
-        <path className="coil-strip" d="M214 316 L640 286 L640 344 L214 376 Z" fill="url(#coil-strip)" />
-        <rect className="coil-shine" x="-140" y="270" width="140" height="120" fill="url(#coil-shine)" />
+        <path className="coil-fill" d={strip} />
+        <path d={strip} fill="url(#coil-strip-shade)" />
+        <rect className="coil-shine" x="-160" y={p1.y - 60} width="160" height="160" fill="url(#coil-shine)" />
       </g>
-      <path d="M214 376 L640 344" stroke="rgba(0,0,0,.35)" strokeWidth="3" />
-      {/* coil body */}
-      <circle cx="230" cy="210" r="168" fill="url(#coil-face)" />
-      <circle className="coil-paint" cx="230" cy="210" r="162" fill="none" style={{ stroke: 'var(--coil)' }} strokeWidth="12" />
+      <path d={`M${p1.x + L.x} ${p1.y + L.y} L${p2.x + L.x} ${p2.y + L.y}`} stroke="rgba(255,255,255,.35)" strokeWidth="1.5" />
+
+      {/* cylinder body: back face + the painted outer wrap */}
+      <path
+        className="coil-fill"
+        d={`M${cx} ${cy - ry} L${bx} ${by - ry} A${rx} ${ry} 0 0 1 ${bx} ${by + ry} L${cx} ${cy + ry} Z`}
+      />
+      <path
+        d={`M${cx} ${cy - ry} L${bx} ${by - ry} A${rx} ${ry} 0 0 1 ${bx} ${by + ry} L${cx} ${cy + ry} Z`}
+        fill="url(#coil-body-shade)"
+      />
+      {/* wrap lines along the body */}
+      {[0.22, 0.5, 0.78].map((k) => (
+        <path
+          key={k}
+          d={`M${cx} ${cy - ry + 2 * ry * k} L${bx} ${by - ry + 2 * ry * k}`}
+          stroke="rgba(0,0,0,.18)"
+          strokeWidth="1"
+        />
+      ))}
+
+      {/* front face: rolled aluminium layers */}
+      <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill="url(#coil-face)" />
+      <ellipse className="coil-paint" cx={cx} cy={cy} rx={rx - 3} ry={ry - 5} fill="none" strokeWidth="9" />
       <g className="coil-rings">
-        {rings.map((r) => (
-          <circle key={r} cx="230" cy="210" r={r} fill="none" stroke="rgba(30,32,35,.28)" strokeWidth="1" strokeDasharray={r % 4 ? '220 14' : '160 22'} />
+        {rings.map((r, i) => (
+          <ellipse
+            key={r}
+            cx={cx}
+            cy={cy}
+            rx={(r * rx) / ry}
+            ry={r}
+            fill="none"
+            stroke="rgba(30,32,35,.3)"
+            strokeWidth="1"
+            strokeDasharray={i % 2 ? '170 26' : '118 30 32 16'}
+          />
         ))}
       </g>
-      <circle cx="230" cy="210" r="40" fill="#0b0c0d" />
-      <circle cx="230" cy="210" r="40" fill="none" stroke="rgba(255,255,255,.25)" strokeWidth="2" />
+      {/* core */}
+      <ellipse cx={cx} cy={cy} rx={(44 * rx) / ry} ry="44" fill="#0b0c0d" />
+      <ellipse cx={cx} cy={cy} rx={(44 * rx) / ry} ry="44" fill="none" stroke="rgba(255,255,255,.25)" strokeWidth="2" />
     </svg>
   );
 }
@@ -127,6 +184,9 @@ export function FactoryPage() {
             {f.primary}
           </Button>
           <Button href="#ral">{f.secondary}</Button>
+        </div>
+        <div className="factory-hero-bg" aria-hidden="true">
+          <Img name="why-facility" alt="" sizes="60vw" priority />
         </div>
         <div className="factory-coil" style={{ '--coil': heroColour.hex } as CSSProperties}>
           <Coil label={f.coil} />

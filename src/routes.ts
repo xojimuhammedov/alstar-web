@@ -7,6 +7,9 @@ import { defaultLocale, localePath, locales, type Locale } from './i18n';
 
 export type Route =
   | { page: 'home' }
+  | { page: 'products' }
+  | { page: 'technical' }
+  | { page: 'installation' }
   | { page: 'projects' }
   | { page: 'factory' }
   | { page: 'articles' }
@@ -14,14 +17,19 @@ export type Route =
 
 /** URL segment per page (shared by all locales). */
 export const segments = {
+  products: 'mahsulotlar',
+  technical: 'texnik-markaz',
   projects: 'loyihalar',
   factory: 'boyoq-zavodi',
   articles: 'maqolalar',
 } as const;
 
-/** Articles are written in Uzbek only, so their pages exist for the default locale only. */
+/** Sub-path of the installation guide inside the technical center. */
+export const installationSegment = 'ornatish-qollanmasi';
+
+/** Articles and the installation guide are written in Uzbek only, so their pages exist for the default locale only. */
 export const routeExists = (locale: Locale, route: Route) =>
-  !(route.page === 'articles' || route.page === 'article') || locale === defaultLocale;
+  !(route.page === 'articles' || route.page === 'article' || route.page === 'installation') || locale === defaultLocale;
 
 export function routePath(locale: Locale, route: Route): string {
   const base = localePath(locale);
@@ -30,6 +38,8 @@ export function routePath(locale: Locale, route: Route): string {
       return base;
     case 'article':
       return `${base}${segments.articles}/${route.slug}/`;
+    case 'installation':
+      return `${base}${segments.technical}/${installationSegment}/`;
     default:
       return `${base}${segments[route.page]}/`;
   }
@@ -55,7 +65,10 @@ export function parseRoute(pathname: string): { locale: Locale; route: Route } {
   if ((locales as readonly string[]).includes(parts[0])) locale = parts.shift() as Locale;
   const [first, second] = parts;
   let route: Route = { page: 'home' };
-  if (first === segments.projects) route = { page: 'projects' };
+  if (first === segments.products) route = { page: 'products' };
+  else if (first === segments.technical)
+    route = second === installationSegment ? { page: 'installation' } : { page: 'technical' };
+  else if (first === segments.projects) route = { page: 'projects' };
   else if (first === segments.factory) route = { page: 'factory' };
   else if (first === segments.articles) route = second ? { page: 'article', slug: second } : { page: 'articles' };
   return { locale, route: routeExists(locale, route) ? route : { page: 'home' } };
@@ -68,6 +81,9 @@ export const useRoute = () => useContext(RouteContext);
 export function allRoutes(): { locale: Locale; route: Route }[] {
   const pages: Route[] = [
     { page: 'home' },
+    { page: 'products' },
+    { page: 'technical' },
+    { page: 'installation' },
     { page: 'projects' },
     { page: 'factory' },
     { page: 'articles' },
